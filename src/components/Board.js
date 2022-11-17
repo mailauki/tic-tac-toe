@@ -1,15 +1,29 @@
-import { Box } from "@chakra-ui/react"
+import React from "react";
+import { Box } from "@chakra-ui/react";
 
 export default function Board() {
+  // const board = Array.from(Array(9), (e,i))
+  // const board = ["X", "", "", "", "", "", "", "", ""]
+  const [board, setBoard] = React.useState(["", "", "", "", "", "", "", "", ""])
+
+  console.log(board)
+
+  function handleAddPiece(e) {
+    const newBoard = [...board]
+    newBoard.splice(e.currentTarget.id, 1, "X")
+    setBoard(newBoard)
+  }
+
   return (
     <Box className="Board" bg="white">
-      {Array.from(Array(9), (_,i) => i+1).map((el) => (
+      {board.map((el, index) => (
         <Box  
-          id={el} 
+          id={index} 
           className="Box"
-          onClick={(e) => console.log(e.currentTarget.id)}
+          onClick={handleAddPiece}
         >
-          <p className="Piece">{el === 1 || el === 4 || el === 8 ? "X" : "O"}</p>
+          <p className="Piece">{el}</p>
+          {/* <p className="Piece">{el === 1 || el === 4 || el === 8 ? "X" : "O"}</p> */}
           {/* {el === 1 || el === 4 || el === 8 ? (
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" className="Piece"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"/></svg>
           ) : (
