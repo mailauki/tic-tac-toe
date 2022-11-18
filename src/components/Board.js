@@ -1,8 +1,9 @@
 import React from "react";
-import { Box, Button, AlertDialog, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, AlertDialog, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, useDisclosure, Spinner } from "@chakra-ui/react";
 
 export default function Board() {
   const [board, setBoard] = React.useState(["", "", "", "", "", "", "", "", ""])
+  const newBoard = [...board]
   const [turnCount, setTurnCount] = React.useState(0)
   const token = turnCount % 2 == 1 ? "O" : "X"
 
@@ -49,13 +50,28 @@ export default function Board() {
     if(alert) onOpen()
   }, [alert])
 
-  function handleAddPiece(e) {
-    const newBoard = [...board]
+  React.useEffect(() => {
+    const openSpace = board.findIndex((space) => space === "")
+    if(token === "O") {
+      newBoard.splice(openSpace, 1, token)
+      if(turnCount < 9) setTurnCount(turnCount + 1)
+      console.log(openSpace)
+      setAlert("Loading...")
+      setTimeout(() => {
+        setAlert(null)
+        onClose()
+        setBoard(newBoard)
+      }, 3000)
+    }
+  }, [token])
 
+  function handleAddPiece(e) {
     if(!isOver) {
       if(newBoard[e.currentTarget.id] === "") {
-        newBoard.splice(e.currentTarget.id, 1, token)
-        if(turnCount < 9) setTurnCount(turnCount + 1)
+        if(token === "X") {
+          newBoard.splice(e.currentTarget.id, 1, token)
+          if(turnCount < 9) setTurnCount(turnCount + 1)
+        }
       } else {
         setAlert("Can't move there!")
         onOpen()
@@ -99,16 +115,36 @@ export default function Board() {
         isCentered
       >
         <AlertDialogOverlay >
-          <AlertDialogContent sx={{ maxWidth: "300px" }}>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              {alert}
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-            <Button variant="ghost" mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button variant="ghost" colorScheme="red" onClick={handleClose}>Reset</Button>
-            </AlertDialogFooter>
+          <AlertDialogContent sx={{ maxWidth: "300px", textAlign: "center" }}>
+            {alert === "Loading..." ? (
+              <>
+                <AlertDialogHeader>
+                  <Spinner
+                    thickness='4px'
+                    speed='0.65s'
+                    emptyColor='gray.200'
+                    color='blue.500'
+                    size='xl'
+                  />
+                  <br/>
+                  Opponent Thinking...
+                </AlertDialogHeader>
+              </>
+            ) : (
+              <>
+                <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                  {alert}
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <Button variant="ghost" mr={3} onClick={onClose}>
+                    Close
+                  </Button>
+                  <Button variant="ghost" colorScheme="red" onClick={handleClose}>
+                    Reset
+                  </Button>
+                </AlertDialogFooter>
+              </>
+            )}
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
