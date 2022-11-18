@@ -1,12 +1,12 @@
-import React, { useCallback } from "react";
-import { Box, Button, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure } from "@chakra-ui/react";
+import React from "react";
+import { Box, Button, AlertDialog, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, useDisclosure } from "@chakra-ui/react";
 
 export default function Board() {
   const [board, setBoard] = React.useState(["", "", "", "", "", "", "", "", ""])
   const [turnCount, setTurnCount] = React.useState(0)
+  const token = turnCount % 2 == 1 ? "O" : "X"
 
   const [alert, setAlert] = React.useState(null)
-
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = React.useRef()
 
@@ -51,7 +51,6 @@ export default function Board() {
 
   function handleAddPiece(e) {
     const newBoard = [...board]
-    const token = turnCount % 2 == 1 ? "O" : "X"
 
     if(!isOver) {
       if(newBoard[e.currentTarget.id] === "") {
@@ -94,10 +93,9 @@ export default function Board() {
         ))}
       </Box>
 
-      {/* <AlertDialog 
+      <AlertDialog 
         isOpen={isOpen} 
-        leastDestructiveRef={cancelRef} 
-        onClose={onClose}
+        leastDestructiveRef={cancelRef}
         isCentered
       >
         <AlertDialogOverlay >
@@ -106,31 +104,14 @@ export default function Board() {
               {alert}
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <Button onClick={onClose}>
-                Close
-              </Button>
+            <Button variant="ghost" mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button variant="ghost" colorScheme="red" onClick={handleClose}>Reset</Button>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialogOverlay>
-      </AlertDialog> */}
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
-        <ModalOverlay />
-        <ModalContent sx={{ maxWidth: "300px" }}>
-          {/* <ModalHeader>{isOver ? "Game Over" : "Error"}</ModalHeader> */}
-          <ModalHeader>{alert}</ModalHeader>
-          <ModalCloseButton />
-          {/* <ModalBody fontSize="lg" fontWeight="bold">
-            {alert}
-          </ModalBody> */}
-
-          <ModalFooter>
-            <Button variant="ghost" onClick={onClose}>
-              Close
-            </Button>
-            <Button variant="ghost" colorScheme="red" ml={3} onClick={handleClose}>Reset</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      </AlertDialog>
     </>
   )
 }
