@@ -1,9 +1,7 @@
 import React, { useCallback } from "react";
-import { Box, Button, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure } from "@chakra-ui/react";
 
 export default function Board() {
-  // const board = Array.from(Array(9), (e,i))
-  // const board = ["X", "", "", "", "", "", "", "", ""]
   const [board, setBoard] = React.useState(["", "", "", "", "", "", "", "", ""])
   const [turnCount, setTurnCount] = React.useState(0)
 
@@ -36,8 +34,6 @@ export default function Board() {
   })
   const isFull = turnCount === 9
   const isOver = isWin || isFull
-  const winner = isWin ? `${board[isWin[0]]} wins!` : null
-  
 
   React.useEffect(() => {
     if(isOver) {
@@ -75,29 +71,17 @@ export default function Board() {
     setAlert(null)
   }
 
+  function handleClose() {
+    onClose()
+    handleReset()
+  }
+
   return (
     <>
-      <br/>
-      <Button onClick={handleReset} colorScheme="teal">Reset Board</Button>
-
-      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              {alert}
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              {/* <Button ref={cancelRef} onClick={onClose}>
-                Close
-              </Button> */}
-              <Button onClick={onClose} ml={3}>
-                Close
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-      <br />
+      <Box className="Header">
+        <Button onClick={handleReset} colorScheme="teal">Reset Board</Button>
+      </Box>
+      
       <Box className="Board" bg="white">
         {board.map((el, index) => (
           <Box  
@@ -109,6 +93,44 @@ export default function Board() {
           </Box>
         ))}
       </Box>
+
+      {/* <AlertDialog 
+        isOpen={isOpen} 
+        leastDestructiveRef={cancelRef} 
+        onClose={onClose}
+        isCentered
+      >
+        <AlertDialogOverlay >
+          <AlertDialogContent sx={{ maxWidth: "300px" }}>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              {alert}
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <Button onClick={onClose}>
+                Close
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog> */}
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent sx={{ maxWidth: "300px" }}>
+          {/* <ModalHeader>{isOver ? "Game Over" : "Error"}</ModalHeader> */}
+          <ModalHeader>{alert}</ModalHeader>
+          <ModalCloseButton />
+          {/* <ModalBody fontSize="lg" fontWeight="bold">
+            {alert}
+          </ModalBody> */}
+
+          <ModalFooter>
+            <Button variant="ghost" onClick={onClose}>
+              Close
+            </Button>
+            <Button variant="ghost" colorScheme="red" ml={3} onClick={handleClose}>Reset</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   )
 }
