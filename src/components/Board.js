@@ -36,15 +36,20 @@ export default function Board() {
   const isFull = turnCount === 9
   const isOver = isWin || isFull
 
-  const hasConsecutive = winCombos.filter((win) => {
+  const hasXConsecutive = winCombos.filter((win) => {
     if(win.map((i) => xArray.includes(i)).filter((el) => el === true).length === 2) {
       return win
     }
-    else if(win.map((i) => oArray.includes(i)).filter((el) => el === true).length === 2) {
+  })
+  const hasOConsecutive = winCombos.filter((win) => {
+    if(win.map((i) => oArray.includes(i)).filter((el) => el === true).length === 2) {
       return win
     }
   })
-  const nextBestMove = hasConsecutive.map((win) => win.filter((i) => {
+  const nextBestXMove = hasXConsecutive.map((win) => win.filter((i) => {
+    if(board[i] === "") return i
+  })).flat()[0]
+  const nextBestOMove = hasOConsecutive.map((win) => win.filter((i) => {
     if(board[i] === "") return i
   })).flat()[0]
 
@@ -65,9 +70,13 @@ export default function Board() {
   React.useEffect(() => {
     const openSpace = board.findIndex((space) => space === "")
     if(token === "O" && !isOver) {
-      if(nextBestMove) {
-        newBoard.splice(nextBestMove, 1, token)
-      } else {
+      if(nextBestOMove) {
+        newBoard.splice(nextBestOMove, 1, token)
+      } 
+      else if(nextBestXMove) {
+        newBoard.splice(nextBestXMove, 1, token)
+      }
+      else {
         newBoard.splice(openSpace, 1, token)
       }
       if(turnCount < 9) setTurnCount(turnCount + 1)
