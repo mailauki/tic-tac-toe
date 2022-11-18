@@ -36,6 +36,18 @@ export default function Board() {
   const isFull = turnCount === 9
   const isOver = isWin || isFull
 
+  const hasConsecutive = winCombos.filter((win) => {
+    if(win.map((i) => xArray.includes(i)).filter((el) => el === true).length === 2) {
+      return win
+    }
+    else if(win.map((i) => oArray.includes(i)).filter((el) => el === true).length === 2) {
+      return win
+    }
+  })
+  const nextBestMove = hasConsecutive.map((win) => win.filter((i) => {
+    if(board[i] === "") return i
+  })).flat()[0]
+
   React.useEffect(() => {
     if(isOver) {
       if(isWin) {
@@ -52,10 +64,14 @@ export default function Board() {
 
   React.useEffect(() => {
     const openSpace = board.findIndex((space) => space === "")
-    if(token === "O") {
-      newBoard.splice(openSpace, 1, token)
+    if(token === "O" && !isOver) {
+      if(nextBestMove) {
+        newBoard.splice(nextBestMove, 1, token)
+      } else {
+        newBoard.splice(openSpace, 1, token)
+      }
       if(turnCount < 9) setTurnCount(turnCount + 1)
-      console.log(openSpace)
+
       setAlert("Loading...")
       setTimeout(() => {
         setAlert(null)
@@ -87,8 +103,8 @@ export default function Board() {
   }
 
   function handleClose() {
-    onClose()
     handleReset()
+    onClose()
   }
 
   return (
