@@ -46,12 +46,19 @@ export default function Board() {
       return win
     }
   })
+
   const nextBestXMove = hasXConsecutive.map((win) => win.filter((i) => {
     if(board[i] === "") return i
   })).flat()[0]
   const nextBestOMove = hasOConsecutive.map((win) => win.filter((i) => {
     if(board[i] === "") return i
   })).flat()[0]
+
+  const emptyIndexes = board.map((piece, i) => {
+    if(piece === "") return i
+  }).filter((i) => i !== undefined)
+
+  const randomMove = emptyIndexes[Math.floor(Math.random()*emptyIndexes.length)]
 
   React.useEffect(() => {
     if(isOver) {
@@ -68,7 +75,6 @@ export default function Board() {
   }, [alert])
 
   React.useEffect(() => {
-    const openSpace = board.findIndex((space) => space === "")
     if(token === "O" && !isOver) {
       if(nextBestOMove) {
         newBoard.splice(nextBestOMove, 1, token)
@@ -77,8 +83,9 @@ export default function Board() {
         newBoard.splice(nextBestXMove, 1, token)
       }
       else {
-        newBoard.splice(openSpace, 1, token)
+        newBoard.splice(randomMove, 1, token)
       }
+
       if(turnCount < 9) setTurnCount(turnCount + 1)
 
       setAlert("Loading...")
