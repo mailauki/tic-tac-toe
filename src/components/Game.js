@@ -66,7 +66,11 @@ export default function Game() {
   React.useEffect(() => {
     if(isOver) {
       if(isWin) {
-        setAlert(`Congratulations ${board[isWin[0]]} wins!`)
+        if(board[isWin[0]] === "X") {
+          setAlert("Congratulations You Win!")
+        } else {
+          setAlert("Sorry You Lose.")
+        }
       } else {
         setAlert("Cat's game!")
       }
