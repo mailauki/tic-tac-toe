@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { HamburgerIcon } from '@chakra-ui/icons';
 
-export default function Header({ handleReset, wins, onColorSelect, tokenColor }) {
+export default function Header({ handleReset, wins, onColorSelect, onXColorSelect, onOColorSelect, tokenColor, xTokenColor, oTokenColor }) {
   const colorOptions = ["blue-green", "orange-pink", "purple", "teal", "yellow"]
 
   return (
@@ -33,7 +33,46 @@ export default function Header({ handleReset, wins, onColorSelect, tokenColor })
           colorScheme="teal"
         />
         <MenuList color="black" fontSize="initial">
-          <MenuOptionGroup value={tokenColor} title="Token Color" type="radio" onChange={(v) => onColorSelect(v)}>
+          {/* <MenuOptionGroup 
+            value={tokenColor} 
+            title="Token Color" 
+            type="radio" 
+            onChange={(v) => {
+              onColorSelect(v)
+              onXColorSelect(v)
+              onOColorSelect(v)
+            }}
+          >
+            {colorOptions.map((color) => (
+              <MenuItemOption value={color}>
+                <Box className={`TokenColor ${color}`}>
+                  {color}
+                </Box>
+              </MenuItemOption>
+            ))}
+          </MenuOptionGroup>
+          <MenuDivider /> */}
+          <MenuOptionGroup 
+            value={xTokenColor} 
+            title="X Token Color" 
+            type="radio" 
+            onChange={(v) => onXColorSelect(v)}
+          >
+            {colorOptions.map((color) => (
+              <MenuItemOption value={color}>
+                <Box className={`TokenColor ${color}`}>
+                  {color}
+                </Box>
+              </MenuItemOption>
+            ))}
+          </MenuOptionGroup>
+          <MenuDivider />
+          <MenuOptionGroup 
+            value={oTokenColor} 
+            title="O Token Color" 
+            type="radio" 
+            onChange={(v) => onOColorSelect(v)}
+          >
             {colorOptions.map((color) => (
               <MenuItemOption value={color}>
                 <Box className={`TokenColor ${color}`}>

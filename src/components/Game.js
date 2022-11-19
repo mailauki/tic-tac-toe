@@ -9,7 +9,9 @@ export default function Game() {
   const location = useLocation()
   const pathname = location.pathname
 
-  const [tokenColor, setTokenColor] = React.useState("blue-green")
+  // const [tokenColor, setTokenColor] = React.useState("blue-green")
+  const [xTokenColor, setXTokenColor] = React.useState("blue-green")
+  const [oTokenColor, setOTokenColor] = React.useState("blue-green")
 
   const [board, setBoard] = React.useState(["", "", "", "", "", "", "", "", ""])
   const newBoard = [...board]
@@ -149,11 +151,31 @@ export default function Game() {
 
   return (
     <>
-      <Header handleReset={handleReset} wins={wins} onColorSelect={setTokenColor} tokenColor={tokenColor} />
+      <Header 
+        handleReset={handleReset} 
+        wins={wins} 
+        // onColorSelect={setTokenColor} 
+        onXColorSelect={setXTokenColor} 
+        onOColorSelect={setOTokenColor} 
+        // tokenColor={tokenColor} 
+        xTokenColor={xTokenColor}
+        oTokenColor={oTokenColor}
+      />
 
-      <Board board={board} handleAddPiece={handleAddPiece} tokenColor={tokenColor} />
+      <Board 
+        board={board} 
+        handleAddPiece={handleAddPiece} 
+        // tokenColor={tokenColor} 
+        xTokenColor={xTokenColor}
+        oTokenColor={oTokenColor}
+      />
 
-      <Popup alert={alert} handleClose={handleClose} isOpen={isOpen} onClose={onClose} />
+      <Popup 
+        alert={alert} 
+        handleClose={handleClose} 
+        isOpen={isOpen} 
+        onClose={onClose} 
+      />
     </>
   )
 }
