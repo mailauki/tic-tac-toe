@@ -77,6 +77,10 @@
   background: teal;
 }
 
+.yellow{
+  background: rgb(255, 212, 0);
+}
+
 .Piece {
   font-size: calc((100vw - 1rem) / 3);
   font-weight: bold;

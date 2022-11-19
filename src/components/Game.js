@@ -149,7 +149,7 @@ export default function Game() {
 
   return (
     <>
-      <Header handleReset={handleReset} wins={wins} onColorSelect={setTokenColor} />
+      <Header handleReset={handleReset} wins={wins} onColorSelect={setTokenColor} tokenColor={tokenColor} />
 
       <Board board={board} handleAddPiece={handleAddPiece} tokenColor={tokenColor} />
 
