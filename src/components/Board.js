@@ -1,11 +1,17 @@
 import React from "react";
-import { Box, Button, AlertDialog, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, useDisclosure, Spinner } from "@chakra-ui/react";
+import { Link } from 'react-router-dom';
+import { Box, Button, AlertDialog, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, useDisclosure, Spinner, IconButton } from "@chakra-ui/react";
+// import { FontAwesomeIcon } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
 export default function Board() {
   const [board, setBoard] = React.useState(["", "", "", "", "", "", "", "", ""])
   const newBoard = [...board]
   const [turnCount, setTurnCount] = React.useState(0)
   const token = turnCount % 2 == 1 ? "O" : "X"
+  const [wins, setWins] = React.useState(0)
 
   const [alert, setAlert] = React.useState(null)
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -126,7 +132,19 @@ export default function Board() {
   return (
     <>
       <Box className="Header">
-        <Button onClick={handleReset} colorScheme="teal">Reset Board</Button>
+        <IconButton 
+          colorScheme="teal"
+          as={Link}
+          to="/"
+        >
+          <FontAwesomeIcon icon={faChevronLeft} />
+        </IconButton>
+        <Button onClick={handleReset} colorScheme="teal">
+          Reset Board
+        </Button>
+        <Button variant="ghost" colorScheme="teal">
+          {wins}
+        </Button>
       </Box>
       
       <Box className="Board" bg="white">
