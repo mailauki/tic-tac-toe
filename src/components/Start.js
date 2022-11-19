@@ -23,8 +23,8 @@ export default function Start({onSelect}) {
         id="2P" 
         colorScheme="teal" 
         isDisabled
-        as={Link}
-        to="/2P"
+        // as={Link}
+        // to="/2P"
       >
         2 Player
       </Button>
