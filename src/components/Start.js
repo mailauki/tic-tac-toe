@@ -22,9 +22,9 @@ export default function Start({onSelect}) {
         // onClick={handleGameChoice} 
         id="2P" 
         colorScheme="teal" 
-        isDisabled
-        // as={Link}
-        // to="/2P"
+        // isDisabled
+        as={Link}
+        to="/2P"
       >
         2 Player
       </Button>

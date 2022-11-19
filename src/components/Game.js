@@ -1,10 +1,14 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import { useDisclosure } from "@chakra-ui/react";
 import Header from './Header';
 import Board from './Board';
 import Popup from './Popup';
 
 export default function Game() {
+  const location = useLocation()
+  const pathname = location.pathname
+
   const [board, setBoard] = React.useState(["", "", "", "", "", "", "", "", ""])
   const newBoard = [...board]
   const [turnCount, setTurnCount] = React.useState(0)
@@ -66,10 +70,14 @@ export default function Game() {
   React.useEffect(() => {
     if(isOver) {
       if(isWin) {
-        if(board[isWin[0]] === "X") {
-          setAlert("Congratulations You Win!")
+        if(pathname === "/1P") {
+          if(board[isWin[0]] === "X") {
+            setAlert("Congratulations You Win!")
+          } else {
+            setAlert("Sorry You Lose.")
+          }
         } else {
-          setAlert("Sorry You Lose.")
+          setAlert(`Congradulations ${board[isWin[0]]} Wins!`)
         }
       } else {
         setAlert("Cat's game!")
@@ -82,32 +90,39 @@ export default function Game() {
   }, [alert])
 
   React.useEffect(() => {
-    if(token === "O" && !isOver) {
-      if(nextBestOMove) {
-        newBoard.splice(nextBestOMove, 1, token)
-      } 
-      else if(nextBestXMove) {
-        newBoard.splice(nextBestXMove, 1, token)
-      }
-      else {
-        newBoard.splice(randomMove, 1, token)
-      }
+    if(pathname === "/1P") {
+      if(token === "O" && !isOver) {
+        if(nextBestOMove) {
+          newBoard.splice(nextBestOMove, 1, token)
+        } 
+        else if(nextBestXMove) {
+          newBoard.splice(nextBestXMove, 1, token)
+        }
+        else {
+          newBoard.splice(randomMove, 1, token)
+        }
 
-      if(turnCount < 9) setTurnCount(turnCount + 1)
+        if(turnCount < 9) setTurnCount(turnCount + 1)
 
-      setAlert("Loading...")
-      setTimeout(() => {
-        setAlert(null)
-        onClose()
-        setBoard(newBoard)
-      }, 3000)
+        setAlert("Loading...")
+        setTimeout(() => {
+          setAlert(null)
+          onClose()
+          setBoard(newBoard)
+        }, 3000)
+      }
     }
   }, [token])
 
   function handleAddPiece(e) {
     if(!isOver) {
       if(newBoard[e.currentTarget.id] === "") {
-        if(token === "X") {
+        if(pathname === "/1P") {
+          if(token === "X") {
+            newBoard.splice(e.currentTarget.id, 1, token)
+            if(turnCount < 9) setTurnCount(turnCount + 1)
+          }
+        } else {
           newBoard.splice(e.currentTarget.id, 1, token)
           if(turnCount < 9) setTurnCount(turnCount + 1)
         }
