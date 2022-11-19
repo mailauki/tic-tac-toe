@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 
-export default function Board({ board, handleAddPiece }) {
+export default function Board({ board, handleAddPiece, tokenColor }) {
   return (
     <Box className="Board" bg="white">
       {board.map((el, index) => (
@@ -9,7 +9,7 @@ export default function Board({ board, handleAddPiece }) {
           className="Box"
           onClick={handleAddPiece}
         >
-          <p className="Piece">{el}</p>
+          <p className={`Piece ${tokenColor}`}>{el}</p>
         </Box>
       ))}
     </Box>

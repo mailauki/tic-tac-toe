@@ -56,6 +56,27 @@
   z-index: 1;
 }
 
+.TokenColor {
+  color: transparent;
+  width: 100%;
+}
+
+.blue-green {
+  background: linear-gradient(45deg, cornflowerblue 25%, yellowgreen);
+}
+
+.orange-pink {
+  background: linear-gradient(45deg, orange 25%, hotpink);
+}
+
+.purple {
+  background: blueviolet;
+}
+
+.teal {
+  background: teal;
+}
+
 .Piece {
   font-size: calc((100vw - 1rem) / 3);
   font-weight: bold;
@@ -66,7 +87,7 @@
   margin: 0;
   position: absolute;
   top: -1.25vh;
-  background: linear-gradient(45deg, cornflowerblue 25%, yellowgreen);
+  /* background: linear-gradient(45deg, cornflowerblue 25%, yellowgreen); */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

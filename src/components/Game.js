@@ -9,6 +9,8 @@ export default function Game() {
   const location = useLocation()
   const pathname = location.pathname
 
+  const [tokenColor, setTokenColor] = React.useState("blue-green")
+
   const [board, setBoard] = React.useState(["", "", "", "", "", "", "", "", ""])
   const newBoard = [...board]
   const [turnCount, setTurnCount] = React.useState(0)
@@ -147,9 +149,9 @@ export default function Game() {
 
   return (
     <>
-      <Header handleReset={handleReset} wins={wins} />
+      <Header handleReset={handleReset} wins={wins} onColorSelect={setTokenColor} />
 
-      <Board board={board} handleAddPiece={handleAddPiece} />
+      <Board board={board} handleAddPiece={handleAddPiece} tokenColor={tokenColor} />
 
       <Popup alert={alert} handleClose={handleClose} isOpen={isOpen} onClose={onClose} />
     </>
