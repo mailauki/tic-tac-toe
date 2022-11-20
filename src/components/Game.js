@@ -9,7 +9,6 @@ export default function Game() {
   const location = useLocation()
   const pathname = location.pathname
 
-  // const [tokenColor, setTokenColor] = React.useState("blue-green")
   const [xTokenColor, setXTokenColor] = React.useState("blue-green")
   const [oTokenColor, setOTokenColor] = React.useState("blue-green")
 
@@ -17,7 +16,10 @@ export default function Game() {
   const newBoard = [...board]
   const [turnCount, setTurnCount] = React.useState(0)
   const token = turnCount % 2 == 1 ? "O" : "X"
+
   const [wins, setWins] = React.useState(0)
+  const [xWins, setXWins] = React.useState(0)
+  const [oWins, setOWins] = React.useState(0)
 
   const [alert, setAlert] = React.useState(null)
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -90,7 +92,12 @@ export default function Game() {
   }, [isOver])
 
   React.useEffect(() => {
-    if(alert) onOpen()
+    if(alert) {
+      onOpen()
+      if(alert === "Congratulations You Win!") setWins(wins + 1)
+      if(alert === "Congradulations X Wins!") setXWins(xWins + 1)
+      if(alert === "Congradulations O Wins!") setOWins(oWins + 1)
+    }
   }, [alert])
 
   React.useEffect(() => {
@@ -154,10 +161,10 @@ export default function Game() {
       <Header 
         handleReset={handleReset} 
         wins={wins} 
-        // onColorSelect={setTokenColor} 
+        xWins={xWins}
+        oWins={oWins}
         onXColorSelect={setXTokenColor} 
         onOColorSelect={setOTokenColor} 
-        // tokenColor={tokenColor} 
         xTokenColor={xTokenColor}
         oTokenColor={oTokenColor}
       />
@@ -165,7 +172,6 @@ export default function Game() {
       <Board 
         board={board} 
         handleAddPiece={handleAddPiece} 
-        // tokenColor={tokenColor} 
         xTokenColor={xTokenColor}
         oTokenColor={oTokenColor}
       />
